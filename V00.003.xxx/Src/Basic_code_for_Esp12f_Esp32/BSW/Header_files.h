@@ -1,7 +1,7 @@
 #ifndef _HEADER_FILES_H
 #define _HEADER_FILES_H
 
-const String BSW_VER  = "V00.003.001"; // Date : 11-01-2026
+const String BSW_VER  = "V00.003.002"; // Date : 14-01-2026
 
 /* Board specific libraries */
 #if defined(ESP8266)
@@ -29,9 +29,7 @@ const String BSW_VER  = "V00.003.001"; // Date : 11-01-2026
 #include <ESPAsyncWebServer.h>
 
 
-
-/* max timers */
-#define MAX_TIMERS 5
+#define BSW_TIMERS 4 // BSW using first 4 timers
 
 /* timer init */
 
@@ -56,8 +54,8 @@ const String BSW_VER  = "V00.003.001"; // Date : 11-01-2026
 
 /* Basic Local files */
 
-#include "Millis_Timer.h"
 #include "../PIN_CONFIG.h"
+#include "Millis_Timer.h"
 #include "../WIFI_CONFIG.h"
 #include "Wifi_functions.h"
 #include "MIT_APP.h"

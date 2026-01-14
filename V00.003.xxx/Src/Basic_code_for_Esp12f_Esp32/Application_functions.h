@@ -55,10 +55,8 @@ void Timer_timeout_check()
 void Application_loop()
 {
   // keep watching the push button:
-  if(OTA_flag == 0)
-  {
-    web_site_loop();
-  }
+  
+  web_site_loop();
   Timer_timeout_check();
   
 

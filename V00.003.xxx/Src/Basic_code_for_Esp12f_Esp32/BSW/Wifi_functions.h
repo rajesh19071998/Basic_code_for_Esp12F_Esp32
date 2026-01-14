@@ -275,12 +275,12 @@ void Connect_WIFI(String ssid , String password , byte Re_try_count)
 void default_hotspot_config_for_esp32()
 {
   IPAddress local_ip(192,168,4,1);
-IPAddress gateway(192,168,4,1);
-IPAddress subnet(255,255,255,0);
+  IPAddress gateway(192,168,4,1);
+  IPAddress subnet(255,255,255,0);
 
   WiFi.persistent(false); // avoid flash writes
   WiFi.softAPConfig(local_ip, gateway, subnet);
-
+  delay(500);
 }
 
 #endif /*Esp 32 only */
@@ -288,10 +288,13 @@ IPAddress subnet(255,255,255,0);
 void Set_Hotspot(String hot, String pass) {
   // Set device as a Wi-Fi Station
   
-  WiFi.mode(WIFI_STA);
-  WiFi.disconnect();
+ // WiFi.mode(WIFI_STA);
+ // WiFi.disconnect();
 #if defined(ESP32)
   default_hotspot_config_for_esp32();
+#ifdef _WIFI_DEBUG  
+  Serial.println("HOTSPOT config was Done....! ");
+#endif  
 #endif
   boolean conn = WiFi.softAP(hot, pass);
   delay(500);
@@ -339,7 +342,15 @@ void Wifi_and_Hotspot_Mode()
 
 void Hotspot_Only_Mode()
 {
+  delay(500);
+#ifdef _WIFI_DEBUG    
+    Serial.println("try to create HOT_SPOT ");
+    Serial.print("HotSpot_Name: ");
+    Serial.println(AP_NameChar);
+#endif 
+  
     No_Static_IP();
+
     Set_Hotspot( AP_NameChar , WiFiPassword );
 #ifdef _WIFI_DEBUG    
     Serial.println("HOT_SPOT Created Successfully ");
