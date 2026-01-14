@@ -2,7 +2,9 @@
 #define _APPL_HEADER_FILES_H
 
 /* init Timers */
-/* #define MAX_TIMERS 4  ( increment this macro in Header_files.h) */
+#if 0
+ #define MAX_TIMERS 4  ( increment this macro in PIN_CONFIG.h)
+ #endif
 /*0 to 3 reserved , so use from 4 */
 
 #define LED_BLINK_TIMER 4 
