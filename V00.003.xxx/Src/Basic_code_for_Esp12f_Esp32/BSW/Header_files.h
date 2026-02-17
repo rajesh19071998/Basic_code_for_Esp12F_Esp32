@@ -1,7 +1,7 @@
 #ifndef _HEADER_FILES_H
 #define _HEADER_FILES_H
 
-const String BSW_VER  = "V00.003.002"; // Date : 14-01-2026
+const String BSW_VER  = "V00.003.003"; // Date : 17-02-2026
 
 /* Board specific libraries */
 #if defined(ESP8266)

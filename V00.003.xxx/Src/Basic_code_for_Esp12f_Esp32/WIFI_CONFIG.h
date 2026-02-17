@@ -6,12 +6,14 @@
   String BOARD_NAME = "ESP12F_BASIC";
   String Local_DNS_Name = "esp12f";
   String  AP_NameChar = "ESP12F_BASIC" ;
+  String MODULE_TYPE = "ESP12F" ;
 
 #elif defined(ESP32)
   String BOARD_NUMBER = "17";
   String BOARD_NAME = "ESP32_BASIC";
   String Local_DNS_Name = "esp32";
   String  AP_NameChar = "ESP32_BASIC" ;
+  String MODULE_TYPE = "ESP32" ;
 #endif
 
 String WiFiPassword = "123456789";
