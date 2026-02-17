@@ -3,6 +3,8 @@
 
 //#define _WIFI_DEBUG
 
+extern void Update_IP_On_Google_Sheet();
+
 #ifndef _WIFI_CONFIG_H
 
 String AP_NameChar = "Rajesh_ESP12F";
@@ -426,6 +428,11 @@ void wifi_check_loop()
        if (WIFI_Status == 0)  // wifi not connected
        {
          WIFI_Setup();
+         wifi_connectedd();
+         if (WIFI_Status == 1) // if wifi reconnected update IP on G sheet
+         {
+           Update_IP_On_Google_Sheet();
+         }
        }
     }
   }

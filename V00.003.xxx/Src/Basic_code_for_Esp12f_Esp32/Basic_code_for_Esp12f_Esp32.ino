@@ -5,8 +5,8 @@
 
 #include "BSW/Header_files.h"
 
-const String APPL_VER = "V00.000.000";
-
+String APPL_VER = "V00.000.000";
+String SW_Compiled_Date = __DATE__ ;
 
 String VERSION =
 //const char VERSION[] PROGMEM =  /*stores in Flash memory*/
@@ -31,6 +31,7 @@ void setup()
    
   WIFI_Setup();
   Application_Setup();
+  google_sheet_setup();
 
 #ifdef _INO_DEBUG
   Serial.println("**** SW Versions *****");
@@ -51,13 +52,11 @@ void setup()
  else
   {
     MIT_APP_Setup();
-    google_sheet_setup();
   }
   
   local_dns_setup();
-
+  Update_IP_On_Google_Sheet(); // only one time
 }
-
 
 
 
@@ -67,7 +66,6 @@ void loop()
   MIT_loop(); /* it will check wifi connected or not in every 20 min */
   local_dns_loop();
   Timer_loop(); // Millis_Timer.h
-  Update_IP_On_Google_Sheet(); // only one time
   
   if(OTA_flag)
   {

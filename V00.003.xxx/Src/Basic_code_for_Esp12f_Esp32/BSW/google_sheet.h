@@ -3,6 +3,8 @@
 
 //https://script.google.com/macros/s/AKfycbzc0LEbZWeHH9As_Y2SULaFRaoMF0Oi35Hdi9cvN4cqZBNy8o8a6l7koztRl4dDDGyTBA/exec?Action=AddESP&ESPName=Rajesh_ESP&ESPNum=55&ESPIP=192.168.31.100
 
+extern String APPL_VER; // from .ino
+extern String SW_Compiled_Date; // from .ino
 
 //#define _G_DEBUG
  
@@ -21,20 +23,11 @@ void sendDataToGoogleSheet(String G_data);
 
 void Update_IP_On_Google_Sheet()
 {
-  static int OneCall = 0; // it will execute one time in RST or power cycle
-  if(OneCall == 0)
-  {
-     // String string_temperature =  String(tem); //float to string
+    //https://script.google.com/macros/s/AKfycbzc0LEbZWeHH9As_Y2SULaFRaoMF0Oi35Hdi9cvN4cqZBNy8o8a6l7koztRl4dDDGyTBA/exec?Action=AddESP&ESPName=Rajesh_ESP&ESPNum=55&ESPIP=192.168.31.100&ESP_G_IP=http://sw1.rajeshv.in&ESP_TYPE=ESP12F&ESP_APPL_V=V00.000.005&ESP_BSW_V=V00.003.010&SW_DATE=13-02-2026&ESP_DNS=http://esp12f.local
 
-     // String string_humidity =  String(hum, DEC); // int to string
-
-    // String G_Data = "Action=AddESP&ESPName=" + BOARD_NAME + "&ESPNum=" + BOARD_NUMBER + "&ESPIP=" + WiFi.localIP().toString();
-
-
-    String G_Data = "Action=AddESP&ESPName=" + BOARD_NAME + "&ESPNum=" + BOARD_NUMBER + "&ESPIP=" + MY_IP;
+    String G_Data = "Action=AddESP&ESPName=" + BOARD_NAME + "&ESPNum=" + BOARD_NUMBER + "&ESPIP=" + MY_IP+"&ESP_G_IP="+Global_IP+
+    "&ESP_TYPE="+MODULE_TYPE+"&ESP_APPL_V="+APPL_VER+"&ESP_BSW_V="+BSW_VER+"&SW_DATE="+SW_Compiled_Date+"&ESP_DNS=https://"+Local_DNS_Name+".local" ;
     sendDataToGoogleSheet(G_Data); 
-    OneCall = 1;
-  }
 
 }
 
