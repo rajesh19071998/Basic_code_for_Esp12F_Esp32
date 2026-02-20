@@ -42,20 +42,7 @@ bool Static_IP()
 {
   bool ok = 1; // Done
 
-#if defined(ESP8266)
-    //Set new hostname
-  WiFi.hostname(BOARD_NAME.c_str());
-#elif defined(ESP32)
-  WiFi.setHostname(BOARD_NAME.c_str());
-#endif
-  //Get Current Hostname
-#ifdef _WIFI_DEBUG
-  #if defined(ESP8266)
-    Serial.printf("New hostname: %s\n", WiFi.hostname().c_str());
-  #elif defined(ESP32)
-    Serial.printf("New hostname: %s\n", WiFi.getHostname());
-  #endif
-#endif
+
   // Set your Static IP address
   //IPAddress local_IP(192, 168, 31, 250);
   IPAddress local_IP;
@@ -236,9 +223,29 @@ void Wifi_Hotspot_Write(String data , int op)  // new mit
 }
 
 
+void Set_HostName()
+{
+#if defined(ESP8266)
+    //Set new hostname
+  WiFi.hostname(BOARD_NAME.c_str());
+#elif defined(ESP32)
+  WiFi.setHostname(BOARD_NAME.c_str());
+#endif
+  //Get Current Hostname
+#ifdef _WIFI_DEBUG
+  #if defined(ESP8266)
+    Serial.printf("New hostname: %s\n", WiFi.hostname().c_str());
+  #elif defined(ESP32)
+    Serial.printf("New hostname: %s\n", WiFi.getHostname());
+  #endif
+#endif
+}
+
 
 void Connect_WIFI(String ssid , String password , byte Re_try_count)
 {
+  Set_HostName();
+  delay(100);
 #ifdef _WIFI_DEBUG  
    // Connect to Wi-Fi network with SSID and password
   Serial.print("Connecting to ");
