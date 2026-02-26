@@ -1,0 +1,133 @@
+//how to use Example
+//https://script.google.com/macros/s/AKfycbzc0LEbZWeHH9As_Y2SULaFRaoMF0Oi35Hdi9cvN4cqZBNy8o8a6l7koztRl4dDDGyTBA/exec?Action=AddESP&ESPName=Rajesh_ESP&ESPNum=55&ESPIP=192.168.31.100&ESP_G_IP=http://sw1.rajeshv.in&ESP_TYPE=ESP12F&ESP_APPL_V=V00.000.005&ESP_BSW_V=V00.003.010&SW_DATE=13-02-2026&ESP_DNS=http://esp12f.local
+
+var result = "";
+var Data_pos = "";
+
+function doGet(e) { 
+var ss = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1UNbi_AR6szoaBBUkKiyMhwXmqGe6pRnLv8FFL6BndKQ/edit?gid=0#gid=0");
+
+var sheet1 = ss.getSheetByName("Sheet1");
+var sheet2 = ss.getSheetByName("Sheet2");
+
+ if(e.parameter.Action == "AddESP")
+ {
+   addUser(e,sheet1);
+ }
+
+ return ContentService.createTextOutput(result); // Data send to user (MIT APP)
+}
+
+function doPost(e) { 
+
+  var ss = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1UNbi_AR6szoaBBUkKiyMhwXmqGe6pRnLv8FFL6BndKQ/edit?gid=0#gid=0");
+  var sheet1 = ss.getSheetByName("Sheet1"); 
+  
+   if(e.parameter.Action == "AddESP")
+ {
+   addUser(e,sheet1);
+ }
+
+  return ContentService.createTextOutput(result); // Data send to user (MIT APP)
+}
+
+
+function VerifyESP(e,sheet) {
+  var ESPName = e.parameter.ESPName ; 
+  var ESPNum = e.parameter.ESPNum ;
+
+ var ESPName_Found = 0;
+ var ESPNum_Found = 0;
+ 
+ Data_pos = ""; // ESP not found
+
+
+ for(let i=2; i<100; i++)
+  {
+    var i_num = i.toString();
+	
+    var ESPName_Cell = "A"+i_num;
+    var ESPNum_Cell = "B"+i_num;
+    
+    var ESPNameCellVal = sheet.getRange(ESPName_Cell).getValue();
+    var ESPNumCellVal = sheet.getRange(ESPNum_Cell).getValue();
+    
+
+    if(ESPName_Found == 0)
+    {
+      if(ESPNameCellVal == ESPName)
+      {
+        ESPName_Found = 1;
+        Data_pos = i_num;   // found ESP
+      }
+    }
+    if(ESPNum_Found == 0)
+    {
+      if(ESPNumCellVal == ESPNum)
+      {
+        ESPNum_Found = 1;
+      }
+    }
+    
+
+    if(ESPNameCellVal == "")
+    {
+      break; // exit loop if cell is blank
+    }
+
+  }
+
+}
+
+
+//&ESP_G_IP=http://sw1.rajeshv.in&ESP_TYPE=ESP12F&ESP_APPL_V=V00.000.005&ESP_BSW_V=V00.003.010&SW_DATE=13-02-2026&ESP_DNS=http://esp12f.local
+
+function addUser(e,sheet) {
+  var ESPName    = e.parameter.ESPName ; 
+  var ESPNum     = e.parameter.ESPNum ;
+  var ESPIP      = e.parameter.ESPIP ;      // Local IP
+  var ESP_G_IP   = e.parameter.ESP_G_IP ;   // Global IP
+  var ESP_TYPE   = e.parameter.ESP_TYPE ;   // ESP12 or ESP32
+  var ESP_APPL_V = e.parameter.ESP_APPL_V ;
+  var ESP_BSW_V  = e.parameter.ESP_BSW_V ;
+  var SW_DATE    = e.parameter.SW_DATE ;    // SW complied Date
+  var ESP_DNS    = e.parameter.ESP_DNS ;
+  
+  VerifyESP(e,sheet); // it will verify with only ESPName
+
+  var Curr_Date = Utilities.formatDate(new Date(), "Asia/Kolkata", 'dd-MM-yyyy');
+  var Curr_Time = Utilities.formatDate(new Date(), "Asia/Kolkata", 'HH:mm:ss');
+
+  var First_SignUp_Time = Curr_Date+" @ "+ Curr_Time ;
+  
+  if(Data_pos == "") // ESP not found in VerifyESP function , so adding in new line.
+  {
+    sheet.appendRow([ESPName,ESPNum,ESPIP,First_SignUp_Time, ESP_G_IP, ESP_TYPE, ESP_APPL_V, ESP_BSW_V, SW_DATE, ESP_DNS ]);
+    result = "New ESP BOARD Added ....!";
+  }	
+  else
+  { 
+     var num_pos     = "B"+Data_pos;
+     var IPCellPos   = "C"+Data_pos;
+	 var TimeCellPos = "D"+Data_pos;
+	 var G_ip_pos    = "E"+Data_pos;
+	 var type_pos    = "F"+Data_pos;
+	 var Appl_V_pos  = "G"+Data_pos;
+	 var Bsw_V_pos   = "H"+Data_pos;
+	 var Sw_date_pos = "I"+Data_pos;
+	 var DNS_pos     = "J"+Data_pos;
+	 
+     sheet.getRange(num_pos).setValue(ESPNum);
+     sheet.getRange(IPCellPos).setValue(ESPIP);
+	 sheet.getRange(TimeCellPos).setValue(First_SignUp_Time);
+	 sheet.getRange(G_ip_pos).setValue(ESP_G_IP);
+	 sheet.getRange(type_pos).setValue(ESP_TYPE);
+	 sheet.getRange(Appl_V_pos).setValue(ESP_APPL_V);
+	 sheet.getRange(Bsw_V_pos).setValue(ESP_BSW_V);
+	 sheet.getRange(Sw_date_pos).setValue(SW_DATE);
+	 sheet.getRange(DNS_pos).setValue(ESP_DNS);
+	 
+	 result = "ESP IP Updated Successfully..!";
+	 
+  }
+}
